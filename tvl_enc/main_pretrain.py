@@ -75,7 +75,7 @@ def get_args_parser():
                         help='epochs to warmup LR')
 
     # Dataset parameters
-    parser.add_argument("--datasets_dir", type=str, default="./.datasets",
+    parser.add_argument("--datasets_dir", type=str, default="/root/autodl-tmp/tvl/Touch-Vision-Language-Dataset/tvl_dataset",
                         help="Directory containing the datasets")
     parser.add_argument("--datasets", type=str, nargs="+", default=["ssvtp", "hct"], choices=["ssvtp", "hct"],
                         help="Datasets to use for training and validation")
