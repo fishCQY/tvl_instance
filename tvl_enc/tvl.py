@@ -1,8 +1,8 @@
 import numpy as np
 import torch 
 import torch.nn as nn
-import timm 
-import open_clip
+import timm
+from tvl_enc.open_clip.src import open_clip
 from typing import Any, Dict, Optional
 from types import SimpleNamespace
 from collections import OrderedDict

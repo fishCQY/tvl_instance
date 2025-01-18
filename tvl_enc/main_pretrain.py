@@ -43,7 +43,7 @@ def get_args_parser():
     parser = argparse.ArgumentParser('Tactile encoder pre-training', add_help=False)
     parser.add_argument('--batch_size', default=64, type=int,
                         help='Batch size per GPU (effective batch size is batch_size * accum_iter * # gpus')
-    parser.add_argument('--epochs', default=400, type=int)
+    parser.add_argument('--epochs', default=100, type=int)
     parser.add_argument('--accum_iter', default=1, type=int,
                         help='Accumulate gradient iterations (for increasing the effective batch size under memory constraints)')    
     parser.add_argument('--use_tac_text_loss', action='store_true', default=False, help="Use special tactile language loss")
@@ -390,7 +390,8 @@ def main(args):
     total_time = time.time() - start_time
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
     print('Training time {}'.format(total_time_str))
-
+import os
+os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
 
 if __name__ == '__main__':
     args = get_args_parser()
@@ -402,5 +403,5 @@ if __name__ == '__main__':
     if args.output_dir:
         Path(args.output_dir).mkdir(parents=True, exist_ok=True)
     if args.log_name is not None and misc.is_main_process():
-        wandb.init(entity="project_vit", project="tvl", config=args, name=args.log_name, sync_tensorboard=True)
+        wandb.init(entity="3049623863-scut", project="tvl", config=args, name=args.log_name, sync_tensorboard=True)
     main(args)

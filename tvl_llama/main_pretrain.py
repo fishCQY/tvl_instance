@@ -22,19 +22,18 @@ from data.dataset import PretrainDataset
 
 from engine_pretrain import train_one_epoch
 
-
 def get_args_parser():
     parser = argparse.ArgumentParser('imagebind-llm pre-training', add_help=False)
-    parser.add_argument('--batch_size', default=64, type=int,
+    parser.add_argument('--batch_size', default=16, type=int,
                         help='Batch size per GPU (effective batch size is batch_size * accum_iter * # gpus')
-    parser.add_argument('--epochs', default=400, type=int)
+    parser.add_argument('--epochs', default=10, type=int)
     parser.add_argument('--accum_iter', default=1, type=int,
                         help='Accumulate gradient iterations (for increasing the effective batch size under memory constraints)')
 
     # Model parameters
     parser.add_argument('--llama_type', default='llama-2-7b', type=str,
                         help='Type of LLaMA model') #
-    parser.add_argument('--llama_path', default='/path/to/llama', type=str,
+    parser.add_argument('--llama_path', default='/root/autodl-tmp/tvl/tvl_instance/tvl_llama/llama-2', type=str,
                         help='path to LLaMA pretrained checkpoint')
     parser.add_argument('--max_words', default=96, type=int,
                         help='max number of input words')
@@ -54,7 +53,7 @@ def get_args_parser():
                         help='epochs to warmup LR')
 
     # Dataset parameters
-    parser.add_argument('--data_config', default='configs/data/pretrain/EN.yaml', type=str,
+    parser.add_argument('--data_config', default='/root/autodl-tmp/tvl/tvl_instance/tvl_llama/exps/pretrain-data-config.yaml', type=str,
                         help='dataset config path')
     parser.add_argument('--num_workers', default=10, type=int)
     parser.add_argument('--pin_mem', action='store_true',
@@ -63,7 +62,7 @@ def get_args_parser():
     parser.set_defaults(pin_mem=True)
 
 
-    parser.add_argument('--output_dir', default='./output',
+    parser.add_argument('--output_dir', default='/root/autodl-tmp/tvl/tvl_instance/tvl_llama/output',
                         help='path where to save, empty for no saving')
     parser.add_argument('--log_dir', default=None,
                         help='path where to tensorboard log')
@@ -184,7 +183,7 @@ def main(args):
 
     # Start a wandb run with `sync_tensorboard=True`
     if global_rank == 0 and args.log_name is not None:
-        wandb.init(entity="project_vit", project="tactile-llm", config=args, name=args.log_name, sync_tensorboard=True)
+        wandb.init(entity="3049623863-scut", project="tactile-llm", config=args, name=args.log_name, sync_tensorboard=True)
         
     # SummaryWrite
     if global_rank == 0 and args.log_dir is not None:

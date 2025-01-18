@@ -34,9 +34,9 @@ def get_args_parser():
     # Model parameters
     parser.add_argument('--llama_type', default='llama-2-7b', type=str,
                         help='Type of LLaMA model') #
-    parser.add_argument('--llama_path', default='/path/to/llama', type=str,
+    parser.add_argument('--llama_path', default='/root/autodl-tmp/tvl/tvl_instance/tvl_llama/llama-2', type=str,
                         help='path to LLaMA pretrained checkpoint')
-    parser.add_argument('--pretrained_path', default='/path/to/pretrained', type=str,
+    parser.add_argument('--pretrained_path', default='./main_pretrain.py', type=str,
                         help='path to checkpoint from pretrain stage')
     parser.add_argument('--max_words', default=512, type=int,
                         help='max number of input words')
@@ -56,7 +56,7 @@ def get_args_parser():
                         help='epochs to warmup LR')
 
     # Dataset parameters
-    parser.add_argument('--data_config', default='configs/data/finetune/EN.yaml', type=str,
+    parser.add_argument('--data_config', default='exps/pretrain-data-config.yaml', type=str,
                         help='dataset config path')
     parser.add_argument('--num_workers', default=10, type=int)
     parser.add_argument('--pin_mem', action='store_true',
@@ -65,7 +65,7 @@ def get_args_parser():
     parser.set_defaults(pin_mem=True)
 
 
-    parser.add_argument('--output_dir', default='./output',
+    parser.add_argument('--output_dir', default='/root/autodl-tmp/tvl/tvl_instance/tvl_llama/output',
                         help='path where to save, empty for no saving')
     parser.add_argument('--log_dir', default=None,
                         help='path where to tensorboard log')

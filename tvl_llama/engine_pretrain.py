@@ -42,6 +42,7 @@ def train_one_epoch(model: LLaMA_adapter,
             tactiles = tactiles.to(device, non_blocking=True)
             observations["tactile"] = tactiles
 
+
         with torch.cuda.amp.autocast(dtype=torch.bfloat16):
             c_loss, m_loss = model(examples, labels, observations)
         loss = c_loss  + m_loss * 0

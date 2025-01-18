@@ -1,6 +1,4 @@
 META:
-- "/home/mfu/dataset/cc3m/cc3m.csv"
-- "/home/mfu/dataset/tvl_dataset/hct/data1/train.csv"
-- "/home/mfu/dataset/tvl_dataset/hct/data2/train.csv" 
-- "/home/mfu/dataset/tvl_dataset/hct/data3/train.csv"
-- "/home/mfu/dataset/tvl_dataset/ssvtp/train.csv"
+- "/root/autodl-tmp/tvl/Touch-Vision-Language-Dataset/cc3m.csv"
+- "/root/autodl-tmp/tvl/Touch-Vision-Language-Dataset/tvl_dataset/hct/data1/train.csv"
+- "/root/autodl-tmp/tvl/Touch-Vision-Language-Dataset/tvl_dataset/ssvtp/train.csv"

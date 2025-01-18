@@ -381,6 +381,8 @@ class DistributedSubEpochSampler(torch.utils.data.Sampler):
         self.shuffle = shuffle
         self.split_epoch = split_epoch
         self.seed = seed
+        # Initialize epoch as 0 or any default value you want
+        self.epoch = 0
 
         self.num_samples = len(dataset) // (num_replicas * split_epoch)
 

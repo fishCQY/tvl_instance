@@ -422,7 +422,7 @@ def load_text_data(
 
 class TacVisDatasetV2(Dataset):
     def __init__(self, root_dir: str, transform_rgb: Optional[Callable] = None, transform_tac: Optional[Callable] = None,
-                 split: str = 'train', train_size: float = 0.9, random_seed: int = 42, 
+                 split: str = 'train', train_size: float = 0.9, random_seed: int = 42,
                  modality_types = [ModalityType.VISION, ModalityType.TACTILE, ModalityType.TEXT],
                  device: str = 'cpu', rgb_size=[224, 224], tac_size=[224, 224], im_scale_range=[.12, .18], randomize_crop=False,
                  use_not_contact=False, shuffle_text : bool = False, text_prompt="This image gives tactile feelings of ", 
