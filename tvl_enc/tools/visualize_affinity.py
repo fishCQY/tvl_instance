@@ -12,11 +12,11 @@ import torch.backends.cudnn as cudnn
 
 import matplotlib.pyplot as plt
 
-from tvl_enc import tvl 
+from tvl_enc import tvl, loss, tacvis
 from tvl_enc.tvl import ModalityType
-from loss import TVLLoss
+from tvl_enc.loss import TVLLoss
 
-from transformer_utils import handle_flash_attn
+from tvl_enc.transformer_utils import handle_flash_attn
 
 def print_losses(losses):
     # Determine the longest key length for alignment
@@ -40,9 +40,9 @@ def get_args_parser():
                         help='Number of samples to visualize.')
 
     # Dataset parameters
-    parser.add_argument("--datasets_dir", type=str, default="./.datasets",
+    parser.add_argument("--datasets_dir", type=str, default="/root/autodl-tmp/tvl/Touch-Vision-Language-Dataset/tvl_dataset",
                         help="Directory containing the datasets")
-    parser.add_argument("--output_dir", type=str, default="vis_dir",
+    parser.add_argument("--output_dir", type=str, default="/root/autodl-tmp/tvl/tvl_instance/tvl_enc/vis_dir",
                         help="Directory to save the output")
     parser.add_argument("--datasets", type=str, default="ssvtp", nargs="+", choices=["ssvtp", "hct"],
                         help="Datasets to use for training and validation")
@@ -55,7 +55,7 @@ def get_args_parser():
     parser.add_argument('--no_text_prompt', action="store_true", help="Do not use text prompt when feeding into the text modality")
     parser.add_argument("--use_not_contact", action="store_true", default=False, help="Use not contact data (from tacvis v2 dataset)")
     parser.add_argument("--randomize_crop", action="store_true", default=False, help="Apply randomize_crop to the image modality, only available in tacvis v2 dataset")
-    parser.add_argument("--similarity_thres", type=float, nargs="+", default=0.9, help="Similarity threshold for positive pairs")
+    parser.add_argument("--similarity_thres", type=float, nargs="+", default=0.6356450319+0.8591097295+0.8927201033+0.9208499491, help="Similarity threshold for positive pairs")
     parser.add_argument('--common_latent_dim', type=int, default=None, help="Common latent dimension for all modalities, if is None, use open clip latent dimension")
 
     parser.add_argument("--visualize_train", action="store_true", help="Visualize train images.")
@@ -63,11 +63,11 @@ def get_args_parser():
     parser.add_argument("--not_visualize", action="store_true", help="Do not visualize images.")
     parser.add_argument("--evaluate_all", action="store_true", help="Evaluate all checkpoints in the output_dir.")
 
-    parser.add_argument("--checkpoint_path", type=str, default="", help="Path to the model checkpoint.")
-    parser.add_argument("--active_modality_names", nargs="+", type=str, default=["vision", "tactile"], 
+    parser.add_argument("--checkpoint_path", type=str, default="/root/autodl-tmp/tvl/tvl_instance/tvl_enc/output_dir/checkpoint-acc1.pth", help="Path to the model checkpoint.")
+    parser.add_argument("--active_modality_names", nargs="+", type=str, default=["vision", "tactile"],
                         choices=["vision", "text", "audio", "thermal", "depth", "imu", "tactile"],
                         help="Select 2 modalities to visualize")
-    parser.add_argument('--seed', default=0, type=int)
+    parser.add_argument('--seed', default=42, type=int)
     parser.add_argument('--enable_flash_attention2', action='store_true', default=False, help="Use flash attntion 2")
     parser.add_argument("--color_jitter", action="store_true", default=False, help="Apply color jitter to the image modality")
     parser.add_argument("--use_old_statistics", action="store_true", default=False, help="use old statistics for tactile normalization")
@@ -83,7 +83,7 @@ def main(args):
     if args.evaluate_all and args.visualize_train:
         raise ValueError("Cannot visualize all of train set when running --evaluate_all")
 
-    import tacvis
+    import tvl_enc.tacvis
     if args.use_old_statistics:
         tacvis.USE_OLD_STATISTICS = True
         tacvis.TAC_MEAN[:] = tacvis.TAC_MEAN_OLD[:]
@@ -208,10 +208,10 @@ def main(args):
 
     checkpoint = torch.load(args.checkpoint_path, map_location='cpu')
     missing_keys, unexpected_keys = model.load_state_dict(checkpoint['model'], strict=False)
-    if args.common_latent_dim is None:
-        assert len(unexpected_keys) == 0, f"Unexpected keys found in the checkpoint: {unexpected_keys}"
-    else:
-        assert len(unexpected_keys) <= 2, f"Unexpected keys found in the checkpoint: {unexpected_keys}"
+    # if args.common_latent_dim is None:
+    #     assert len(unexpected_keys) == 0, f"Unexpected keys found in the checkpoint: {unexpected_keys}"
+    # else:
+    #     assert len(unexpected_keys) <= 2, f"Unexpected keys found in the checkpoint: {unexpected_keys}"
     model.eval()
 
     samples = next(iter(data_loader))

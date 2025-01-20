@@ -41,9 +41,9 @@ import wandb
 
 def get_args_parser():
     parser = argparse.ArgumentParser('Tactile encoder pre-training', add_help=False)
-    parser.add_argument('--batch_size', default=64, type=int,
+    parser.add_argument('--batch_size', default=16, type=int,
                         help='Batch size per GPU (effective batch size is batch_size * accum_iter * # gpus')
-    parser.add_argument('--epochs', default=100, type=int)
+    parser.add_argument('--epochs', default=200, type=int)
     parser.add_argument('--accum_iter', default=1, type=int,
                         help='Accumulate gradient iterations (for increasing the effective batch size under memory constraints)')    
     parser.add_argument('--use_tac_text_loss', action='store_true', default=False, help="Use special tactile language loss")
